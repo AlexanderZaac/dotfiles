@@ -43,5 +43,7 @@ ln -nfs ~/.dotfiles/muttrc ~/.muttrc
  
  ## Notes
  
+ ```sh
  ln -nfs ~/.vim ~/.config/nvim
+ ```
  
