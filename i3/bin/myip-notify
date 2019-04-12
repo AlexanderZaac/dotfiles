@@ -13,7 +13,7 @@ if [ -n "${wlanaddr}" ]; then
   text+="\nwlan: ${wlanaddr}"
 fi
 
-lanaddr=$( ifconfig enp4s0f1 | grep 'inet ' | awk '{ print $2 }' )
+lanaddr=$( ifconfig enp0s25 | grep 'inet ' | awk '{ print $2 }' )
 if [ -n "${lanaddr}" ]; then
   text+="\nlan: ${lanaddr}"
 fi

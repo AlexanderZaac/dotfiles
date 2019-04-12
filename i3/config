@@ -7,7 +7,7 @@
 #  - nerd fonts https://github.com/ryanoasis/nerd-fonts/tree/master/patched-fonts/SourceCodePro
 #  - kitty
 #  - i3blocks
-#  - i3lock https://github.com/alepez/i3lock.git
+#  - betterlockscreen
 #  - xcape https://github.com/alols/xcape
 #  - dunst
 #
@@ -102,9 +102,6 @@ bindsym $mod+bar split h
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen
 
-# invert screen colors
-bindsym $mod+Shift+i exec --no-startup-id xcalib -i -a
-
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
 bindsym $mod+t layout tabbed
@@ -112,9 +109,6 @@ bindsym $mod+d layout splith
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
-
-# reload the configuration file
-# bindsym $mod+Shift+c reload
 
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
@@ -130,7 +124,7 @@ mode $exit_mode {
   bindsym l exec --no-startup-id "i3-msg mode default; ~/.dotfiles/i3/bin/exit logout"
   bindsym p exec --no-startup-id "i3-msg mode default; ~/.dotfiles/i3/bin/exit poweroff"
   bindsym r exec --no-startup-id "i3-msg mode default; ~/.dotfiles/i3/bin/exit reboot"
-  bindsym s exec --no-startup-id "i3-msg mode default; ~/.dotfiles/i3/bin/lock; systemctl suspend"
+  bindsym s exec --no-startup-id "i3-msg mode default; betterlockscreen -l dim; systemctl suspend"
 
   # back to normal: Enter or Escape
   bindsym Return    mode "default"
@@ -142,16 +136,14 @@ mode $exit_mode {
 # Wind+Shift+S shows a menu with layout options
 ###############################################################################
 
-set $monitors_mode "select monitors layout  [a] arandr [o] only laptop [r] right vga+laptop [l] left vga+lapton [m] mirror"
+set $monitors_mode "select monitors layout  [a] arandr [h] home [l] laptop"
 bindsym $mod+Shift+s mode $monitors_mode
 
 # Note: both HDMI-1 and HDMI1 because different versions xrandr gives different names
 mode $monitors_mode  {
-  bindsym a exec --no-startup-id "arandr; i3-msg mode default"
-  bindsym o exec --no-startup-id "xrandr --output eDP-1 --primary --pos 0x0; i3-msg mode default"
-  bindsym r exec --no-startup-id "xrandr --output DP-2-1 --auto --right-of eDP-1; i3-msg mode default"
-  bindsym l exec --no-startup-id "xrandr --output DP-2-1 --auto --left-of  eDP-1; i3-msg mode default"
-  bindsym m exec --no-startup-id "xrandr --output DP-2-1 --auto --same-as  eDP-1; i3-msg mode default"
+  bindsym a exec --no-startup-id "~/.dotfiles/bin/monitor-setup manual; i3-msg mode default"
+  bindsym h exec --no-startup-id "~/.dotfiles/bin/monitor-setup home; i3-msg mode default"
+  bindsym l exec --no-startup-id "~/.dotfiles/bin/monitor-setup laptop; i3-msg mode default"
 
   # back to normal: Enter or Escape
   bindsym Return mode "default"
@@ -255,34 +247,6 @@ bindsym $mod+Shift+9 move container to workspace $workspace_9
 workspace_auto_back_and_forth yes
 
 ###############################################################################
-# Bar
-###############################################################################
-
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
-
-bar {
-  status_command i3blocks -c ~/.dotfiles/i3/i3blocks.conf
-  i3bar_command i3bar -t
-  position top
-  font pango:Droid Sans 11
-  separator_symbol "|"
-  tray_padding 0
-  colors {
-    statusline         $light0_hard
-    background         $transparent
-    separator          $light0_hard
-
-     #                   BORDER             BACKGROUND          TEXT
-     focused_workspace   $faded_blue        $dark0_transparent  $light0_hard
-     inactive_workspace  $transparent       $transparent        $light0_soft
-     active_workspace    $transparent       $transparent        $light0_soft
-     urgent_workspace    $faded_orange      $faded_orange       $light0_hard
-     binding_mode        $faded_purple      $faded_purple       $light0_hard
-  }
-}
-
-###############################################################################
 # App shortcuts
 ###############################################################################
 
@@ -298,7 +262,7 @@ bindsym $mod+Return exec --no-startup-id $terminal
 bindsym $mod+c exec --no-startup-id $terminal
 
 # lock screen with Ctrl+Alt+L
-bindsym Control+Mod1+l exec --no-startup-id "~/.dotfiles/i3/bin/lock"
+bindsym Control+Mod1+l exec --no-startup-id "betterlockscreen -l dim"
 
 # Browser
 #set $browser "chromium --proxy-server=localhost:8118"
@@ -381,6 +345,8 @@ for_window [class="rdesktop"] floating disable
 for_window [class="VirtualBox"] floating enable
 for_window [class="VirtualBox Machine"] floating enable
 for_window [class="Nm-connection-editor"] floating enable
+for_window [class="blueman-manager"] floating enable
+for_window [class="Blueman-manager"] floating enable
 
 assign [class="rdesktop"] $workspace_7
 assign [class="Thunderbird"] $workspace_8
@@ -400,4 +366,3 @@ assign [class="MyHome"] $workspace_3
 # Startup
 ###############################################################################
 exec --no-startup-id ~/.dotfiles/wm/bin/startup
-exec --no-startup-id compton --config ~/.dotfiles/wm/compton.conf -b

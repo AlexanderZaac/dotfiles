@@ -17,15 +17,6 @@ cd /
 # tmp directory needed by browser profile sync and cache
 mkdir -p /tmp/${USER}-tmp
 
-# External storage manager
-udiskie --no-automount --tray --use-udisks2 &>/dev/null </dev/null &
-
-# Bluetooth applet
-blueman-applet &>/dev/null </dev/null &
-
-# NetworkManager applet
-nm-applet &>/dev/null </dev/null &
-
 # Mouse bindings
 xbindkeys &>/dev/null </dev/null &
 
@@ -40,7 +31,31 @@ nitrogen --restore
 # Clipboard manager (gpaste)
 ( sleep 5 && gpaste-client start &>/dev/null </dev/null & ) &>/dev/null </dev/null &
 
-xss-lock -- ~/.dotfiles/i3/bin/lock &
+# Setup second monitor if HDM1 is connected
+xrandr | grep 'HDMI-2 connected' && ~/.dotfiles/bin/monitor-setup home
+
+xss-lock -- betterlockscreen -l dim &>/dev/null </dev/null &
+
+compton --config ~/.dotfiles/wm/compton.conf -b
+
+~/.dotfiles/wm/bin/polybar-launcher &>/dev/null </dev/null &
+
+(
+sleep 5
+
+# PulseAudio applet
+pasystray &>/dev/null </dev/null &
+
+# External storage manager
+udiskie --no-automount --tray --use-udisks2 &>/dev/null </dev/null &
+
+# Bluetooth applet
+blueman-applet &>/dev/null </dev/null &
+
+# NetworkManager applet
+nm-applet &>/dev/null </dev/null &
+
+) &>/dev/null </dev/null &
 
 ) &>/dev/null </dev/null &
 
