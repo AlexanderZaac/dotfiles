@@ -23,8 +23,7 @@ autorandr --load "${layout}" 2>/dev/null
 # After monitor setup, polybar must be reloaded
 ~/.dotfiles/wm/bin/polybar-launcher
 
-nitrogen --restore
-
 # And wallpaper should be reloaded to fit
-~/.dotfiles/wm/bin/change-background load
+#~/.dotfiles/wm/bin/change-background load
+nitrogen --restore
 ) &>/dev/null </dev/null &
