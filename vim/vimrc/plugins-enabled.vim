@@ -59,3 +59,5 @@ Plug 'bitc/vim-hdevtools'
 " needs a good font with icons, like patched fonts you can find at
 " https://github.com/ryanoasis/nerd-fonts
 Plug 'ryanoasis/vim-devicons' " Add fonts icons
+
+Plug 'terryma/vim-expand-region'

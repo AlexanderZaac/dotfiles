@@ -22,7 +22,7 @@ set exrc secure " per-directory .vimrc files, unsafe commands disabled
 set foldenable " enable folding
 set foldlevelstart=10 " open most folds by default
 set foldnestmax=10 " 10 nested folders max
-set gdefault " assume the /g flag on :s substitutions to replace all matches
+"set gdefault " assume the /g flag on :s substitutions to replace all matches
 set hidden " Set hidden to allow buffers to be browsed
 set history=8192 " With a powerful PC, we can have a huge history.
 set hlsearch " Highlight search results
@@ -34,7 +34,7 @@ set noerrorbells " Disable error bells
 set nostartofline " Don’t reset cursor to start of line when moving around.
 set nowrap " turn off soft wrap
 set number " Show line number
-set relativenumber " ...but show relative numbers except for the current line
+"set relativenumber " ...but show relative numbers except for the current line
 set ruler " Show ruler on the statusline
 set scrolloff=8 sidescrolloff=15 sidescroll=1 " When to start scrolling
 set shiftwidth=2 " indent by 2 spaces
