@@ -263,7 +263,6 @@ bindsym Control+Mod1+l exec --no-startup-id "betterlockscreen -l dim"
 #set $browser "chromium --proxy-server=localhost:8118"
 set $browser "firefox"
 #set $private_browser "chromium --proxy-server=localhost:8118 --incognito"
-set $browser "chromium --proxy-server=localhost:8118"
 set $private_browser "firefox -private"
 # Start anywhere
 bindsym $mod+b exec --no-startup-id $browser
