@@ -2,9 +2,12 @@
 
 case $1 in
   manual) arandr &>/dev/null </dev/null &;;
-  home) xrandr --dpi 96 --fb 3840x1080 --output HDMI-2 --mode 1920x1080 --scale 1x1 --output eDP-1 --mode 1920x1080 --pos 1920x0 --scale 1x1;;
-  laptop) xrandr --output HDMI-1 --off --output HDMI-2 --off --output eDP-1 --mode 1920x1080 --scale 1x1;;
+  work) xrandr --dpi 96 --fb 3520x1080 --output DP-2-1 --primary --mode 1920x1080 --scale 1x1 --output eDP-1 --mode 1600x900 --pos 1920x0 --scale 1x1;;
+  laptop) xrandr --dpi 96 --fb 1920x1080 --output DP-2-1 --off --output eDP-1 --mode 1600x900 --pos 0x320 --scale 1x1;;
+  monitor) xrandr --dpi 96 --fb 1920x1080 --output DP-2-1 --mode 1920x1080 --scale 1x1 --output eDP-1 --off;;
 esac
 
 # After monitor setup, polybar must be reloaded
 ~/.dotfiles/wm/bin/polybar-launcher
+
+nitrogen --restore

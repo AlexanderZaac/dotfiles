@@ -136,14 +136,15 @@ mode $exit_mode {
 # Wind+Shift+S shows a menu with layout options
 ###############################################################################
 
-set $monitors_mode "select monitors layout  [a] arandr [h] home [l] laptop"
+set $monitors_mode "select monitors layout  [a] arandr [w] work [l] laptop [m] monitor"
 bindsym $mod+Shift+s mode $monitors_mode
 
 # Note: both HDMI-1 and HDMI1 because different versions xrandr gives different names
 mode $monitors_mode  {
   bindsym a exec --no-startup-id "~/.dotfiles/bin/monitor-setup manual; i3-msg mode default"
-  bindsym h exec --no-startup-id "~/.dotfiles/bin/monitor-setup home; i3-msg mode default"
+  bindsym w exec --no-startup-id "~/.dotfiles/bin/monitor-setup work; i3-msg mode default"
   bindsym l exec --no-startup-id "~/.dotfiles/bin/monitor-setup laptop; i3-msg mode default"
+  bindsym m exec --no-startup-id "~/.dotfiles/bin/monitor-setup monitor; i3-msg mode default"
 
   # back to normal: Enter or Escape
   bindsym Return mode "default"
@@ -176,8 +177,8 @@ set $keyboard_layout "change keyboard layout  [i] ita [e] us"
   bindsym $mod+Mod1+l mode $keyboard_layout
 
 mode $keyboard_layout {
-  bindsym i exec --no-startup-id "setxkbmap -layout it -option 'caps:ctrl_modifier'"
-  bindsym e exec --no-startup-id "setxkbmap -layout it -variant us -option 'caps:ctrl_modifier'"
+  bindsym i exec --no-startup-id "setxkbmap -layout it -option 'caps:ctrl_modifier'; i3-msg mode default"
+  bindsym e exec --no-startup-id "setxkbmap -layout it -variant us -option 'caps:ctrl_modifier'; i3-msg mode default"
 
   # back to normal: Enter or Escape
   bindsym Return mode "default"
@@ -266,13 +267,14 @@ bindsym Control+Mod1+l exec --no-startup-id "betterlockscreen -l dim"
 
 # Browser
 #set $browser "chromium --proxy-server=localhost:8118"
-#set $private_browser "chromium --proxy-server=localhost:8118 --incognito"
 set $browser "firefox"
+#set $private_browser "chromium --proxy-server=localhost:8118 --incognito"
+set $private_browser "firefox -private"
 # Start anywhere
 bindsym $mod+b exec --no-startup-id $browser
-#bindsym $mod+Shift+b exec --no-startup-id $private_browser
+bindsym $mod+Shift+b exec --no-startup-id $private_browser
 # Go to browser workspace and start a browser
-bindsym $mod+Mod1+b exec --no-startup-id "i3-msg \"workspace $workspace_2; exec $browser\""
+bindsym $mod+Mod1+b workspace $workspace_2; exec $browser;
 
 # Laptop screen brightness
 bindcode 233 exec --no-startup-id ~/.dotfiles/i3/bin/brightness +

@@ -20,9 +20,6 @@ mkdir -p /tmp/${USER}-tmp
 # Mouse bindings
 xbindkeys &>/dev/null </dev/null &
 
-# Setup second monitor if HDMI is connected
-xrandr | grep 'DP-2-1 connected' && xrandr --output DP-2-1 --primary --mode 1920x1080 --left-of eDP-1
-
 # Random wallpaper
 # ~/.dotfiles/wm/bin/change-background  &>/dev/null </dev/null &
 # nitrogen --set-zoom-fill --random ~/Pictures/Wallpapers &>/dev/null </dev/null &
@@ -32,7 +29,7 @@ nitrogen --restore
 ( sleep 5 && gpaste-client start &>/dev/null </dev/null & ) &>/dev/null </dev/null &
 
 # Setup second monitor if HDM1 is connected
-xrandr | grep 'HDMI-2 connected' && ~/.dotfiles/bin/monitor-setup home
+xrandr | grep 'DP-2-1 connected' && ~/.dotfiles/bin/monitor-setup work
 
 xss-lock -- betterlockscreen -l dim &>/dev/null </dev/null &
 
