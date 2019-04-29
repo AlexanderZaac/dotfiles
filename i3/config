@@ -117,14 +117,14 @@ bindsym $mod+Shift+r restart
 # Exit mode
 # Ctrl+Alt+Del shows a menu with exit options
 ###############################################################################
-set $exit_mode " [l]ogout [p]oweroff [r]eboot [s]uspend"
+set $exit_mode " [L] logout [P] poweroff [R] reboot [S] suspend"
 bindsym Control+Mod1+Delete mode $exit_mode
 
 mode $exit_mode {
   bindsym l exec --no-startup-id "i3-msg mode default; ~/.dotfiles/i3/bin/exit logout"
   bindsym p exec --no-startup-id "i3-msg mode default; ~/.dotfiles/i3/bin/exit poweroff"
   bindsym r exec --no-startup-id "i3-msg mode default; ~/.dotfiles/i3/bin/exit reboot"
-  bindsym s exec --no-startup-id "i3-msg mode default; betterlockscreen -l dim; systemctl suspend"
+  bindsym s exec --no-startup-id "i3-msg mode default; ~/.dotfiles/i3/bin/exit suspend"
 
   # back to normal: Enter or Escape
   bindsym Return    mode "default"
@@ -136,15 +136,15 @@ mode $exit_mode {
 # Wind+Shift+S shows a menu with layout options
 ###############################################################################
 
-set $monitors_mode "select monitors layout  [a] arandr [w] work [l] laptop [m] monitor"
+set $monitors_mode "select monitors layout  [a] arandr [h] home [l] laptop [u] auto"
 bindsym $mod+Shift+s mode $monitors_mode
 
 # Note: both HDMI-1 and HDMI1 because different versions xrandr gives different names
 mode $monitors_mode  {
-  bindsym a exec --no-startup-id "~/.dotfiles/bin/monitor-setup manual; i3-msg mode default"
-  bindsym w exec --no-startup-id "~/.dotfiles/bin/monitor-setup work; i3-msg mode default"
-  bindsym l exec --no-startup-id "~/.dotfiles/bin/monitor-setup laptop; i3-msg mode default"
-  bindsym m exec --no-startup-id "~/.dotfiles/bin/monitor-setup monitor; i3-msg mode default"
+  bindsym a exec --no-startup-id "i3-msg mode default; ~/.dotfiles/bin/monitor-setup manual"
+  bindsym h exec --no-startup-id "i3-msg mode default; ~/.dotfiles/bin/monitor-setup home"
+  bindsym l exec --no-startup-id "i3-msg mode default; ~/.dotfiles/bin/monitor-setup laptop"
+  bindsym u exec --no-startup-id "i3-msg mode default; ~/.dotfiles/bin/monitor-setup auto"
 
   # back to normal: Enter or Escape
   bindsym Return mode "default"
@@ -156,12 +156,12 @@ mode $monitors_mode  {
 # Wind+Shift+D change background
 ###############################################################################
 
-set $background_mode "change background  [j] previos [k] next"
+set $background_mode "change background  [j] next [k] prev"
 bindsym $mod+Shift+d mode $background_mode
 
-mode $background_mode {
-  bindsym j exec --no-startup-id "~/.dotfiles/wm/bin/change-background prev"
-  bindsym k exec --no-startup-id "~/.dotfiles/wm/bin/change-background next"
+mode $background_mode  {
+  bindsym k exec --no-startup-id "~/.dotfiles/wm/bin/change-background prev"
+  bindsym j exec --no-startup-id "~/.dotfiles/wm/bin/change-background next"
 
   # back to normal: Enter or Escape
   bindsym Return mode "default"
@@ -206,7 +206,7 @@ mode $resize_mode {
 ###############################################################################
 # Screenshots
 ###############################################################################
-bindsym --release Print exec flameshot gui -p ~/Pictures
+bindsym --release Print exec --no-startup-id flameshot gui -p ~/Pictures/screenshots
 
 ###############################################################################
 # Workspaces
@@ -219,8 +219,8 @@ set $workspace_4 "4"
 set $workspace_5 "5"
 set $workspace_6 "6"
 set $workspace_7 "7"
-set $workspace_8 "8 "
-set $workspace_9 "9 "
+set $workspace_8 "8"
+set $workspace_9 "9"
 
 # switch to workspace
 bindsym $mod+1 workspace $workspace_1
@@ -251,12 +251,6 @@ workspace_auto_back_and_forth yes
 # App shortcuts
 ###############################################################################
 
-# Available keyboard sym:
-# XF86Explorer
-# XF86HomePage
-# XF86Calculator
-# XF86Tools
-
 # Terminals
 set $terminal "kitty"
 bindsym $mod+Return exec --no-startup-id $terminal
@@ -269,6 +263,7 @@ bindsym Control+Mod1+l exec --no-startup-id "betterlockscreen -l dim"
 #set $browser "chromium --proxy-server=localhost:8118"
 set $browser "firefox"
 #set $private_browser "chromium --proxy-server=localhost:8118 --incognito"
+set $browser "chromium --proxy-server=localhost:8118"
 set $private_browser "firefox -private"
 # Start anywhere
 bindsym $mod+b exec --no-startup-id $browser
@@ -277,13 +272,13 @@ bindsym $mod+Shift+b exec --no-startup-id $private_browser
 bindsym $mod+Mod1+b workspace $workspace_2; exec $browser;
 
 # Laptop screen brightness
-bindcode 233 exec --no-startup-id ~/.dotfiles/i3/bin/brightness +
-bindcode 232 exec --no-startup-id ~/.dotfiles/i3/bin/brightness -
+bindcode 233 exec --no-startup-id xbacklight -inc 2
+bindcode 232 exec --no-startup-id xbacklight -dec 2
 
 # Audio volume up/down (PulseAudio)
-bindsym XF86AudioRaiseVolume exec --no-startup-id pactl -- set-sink-volume @DEFAULT_SINK@ +5%
-bindsym XF86AudioLowerVolume exec --no-startup-id pactl -- set-sink-volume @DEFAULT_SINK@ -5%
-bindsym XF86AudioMute        exec --no-startup-id pactl -- set-sink-volume @DEFAULT_SINK@ 0%
+bindsym XF86AudioRaiseVolume exec --no-startup-id ~/.dotfiles/i3/bin/audio-control out_volume_up
+bindsym XF86AudioLowerVolume exec --no-startup-id ~/.dotfiles/i3/bin/audio-control out_volume_down
+bindsym XF86AudioMute        exec --no-startup-id ~/.dotfiles/i3/bin/audio-control out_mute_toggle
 
 # Spotify
 bindsym XF86AudioPrev exec --no-startup-id ~/.dotfiles/i3/bin/spotify-control prev
@@ -315,24 +310,20 @@ bindsym $mod+e exec $filemanager
 bindsym $mod+i exec --no-startup-id ~/.dotfiles/i3/bin/myip-notify
 
 ###############################################################################
-# Fonts
+# Colors
 ###############################################################################
-# Font for window titles. Will also be used by the bar unless a different font
-# is used in the bar {} block below.
-font pango:Droid Sans 11
-
-client.focused            $neutral_aqua    $neutral_aqua    $dark0       $dark0
+client.focused            $neutral_purple  $neutral_purple  $dark0       $dark0
 client.focused_inactive   $dark0_hard      $dark0_hard      $gray_245    $dark0
 client.unfocused          $dark0_soft      $dark0_soft      $gray_245    $dark0
-client.urgent             $neutral_red     $neutral_red     $light1      $dark0
+client.urgent             $neutral_orange  $neutral_orange  $light1      $dark0
 
 ###############################################################################
 # Gaps
 ###############################################################################
 gaps inner 12
-gaps outer 8
-new_window pixel 2
-new_float pixel 2
+gaps outer 0
+default_border pixel 4
+default_floating_border pixel 12
 smart_gaps on
 hide_edge_borders smart
 
@@ -340,16 +331,15 @@ hide_edge_borders smart
 # Special windows
 ###############################################################################
 for_window [class="Pavucontrol"] floating enable, border normal
-for_window [class="copyq"] floating enable
 for_window [class="Arandr"] floating enable
 for_window [class="Pinentry-gtk-2"] floating enable
 for_window [class="rdesktop"] floating disable
-for_window [class="VirtualBox"] floating enable
-for_window [class="VirtualBox Machine"] floating enable
+for_window [class="VirtualBox Manager"] floating enable
 for_window [class="Nm-connection-editor"] floating enable
 for_window [class="blueman-manager"] floating enable
 for_window [class="Blueman-manager"] floating enable
 
+assign [class="VirtualBox Machine"] $workspace_7
 assign [class="rdesktop"] $workspace_7
 assign [class="Thunderbird"] $workspace_8
 assign [class="Firefox"] $workspace_2

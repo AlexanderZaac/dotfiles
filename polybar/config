@@ -54,9 +54,9 @@ font-3 = "Font Awesome 5 Free Solid:pixelsize=11;0"
 font-4 = "Font Awesome 5 Brands:pixelsize=10;0"
 font-5 = "SauceCodePro Nerd Font Mono:style=Regular"
 
-modules-left = i3
+modules-left = i3 spotify-status
 modules-center =
-modules-right = xbacklight memory cpu system-cpu-frequency pulseaudio vpn-nordvpn-status wlan eth battery temperature date
+modules-right = xbacklight memory cpu system-cpu-frequency pulseaudio vpn-nordvpn-status wlp61s0 ens1u1 enp0s31f6 battery temperature date
 
 tray-position = right
 tray-padding = 2
@@ -169,17 +169,17 @@ format-prefix-foreground = ${colors.foreground-alt}
 format-underline = #4bffdc
 label = %percentage_used%%
 
-[module/wlan]
+[module/wlp61s0]
 type = internal/network
 interface = wlp61s0
 interval = 3.0
 
 format-connected = <label-connected>
 format-connected-underline = #9f78e1
-label-connected = %essid% %local_ip% %upspeed:9% %downspeed:9%
+label-connected = %essid% %local_ip% %downspeed:9% %upspeed:9%
 format-disconnected =
 
-[module/eth]
+[module/enp0s31f6]
 type = internal/network
 interface = enp0s31f6
 interval = 3.0
@@ -187,7 +187,19 @@ interval = 3.0
 format-connected-underline = #55aa55
 format-connected-prefix = " "
 format-connected-prefix-foreground = ${colors.foreground-alt}
-label-connected = %local_ip% %upspeed:9% %downspeed:9%
+label-connected = %local_ip% %downspeed:9% %upspeed:9%
+
+format-disconnected =
+
+[module/ens1u1]
+type = internal/network
+interface = ens1u1
+interval = 3.0
+
+format-connected-underline = #55aa55
+format-connected-prefix = " "
+format-connected-prefix-foreground = ${colors.foreground-alt}
+label-connected = %local_ip% %downspeed:9% %upspeed:9%
 
 format-disconnected =
 
@@ -296,10 +308,17 @@ ramp-1 = 
 ramp-2 = 
 ramp-foreground = ${colors.foreground-alt}
 
- #[module/vpn-nordvpn-status]
- #type = custom/script
- #exec = ~/.dotfiles/polybar/scripts/vpn-nordvpn-status/vpn-nordvpn-status.sh
- #interval = 5
+[module/spotify-status]
+type = custom/script
+interval = 1
+format = <label>
+exec = ~/.dotfiles/polybar/scripts/spotify-status/spotify_status.py
+format-underline = #1db954
+
+#[module/vpn-nordvpn-status]
+#type = custom/script
+#exec = ~/.dotfiles/polybar/scripts/vpn-nordvpn-status/vpn-nordvpn-status.sh
+#interval = 5
 
 [module/system-cpu-frequency]
 type = custom/script
@@ -319,4 +338,3 @@ margin-top = 5
 margin-bottom = 5
 
 ; vim:ft=dosini
-
